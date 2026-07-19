@@ -24,18 +24,38 @@ def index():
 
 @app.route("/filtrar")
 def filtrar_productos():
-     marca_indicada = request.args.get('marca', 'Todo')
-     conexion = sqlite3.connect("mexxlista.db")
-     conexion.row_factory = sqlite3.Row
-     cursor = conexion.cursor()
+    marca_indicada = request.args.get('marca', 'Todo')
+    categoria_indicada = request.args.get('categoria', 'Todo')
+    
+    conexion = sqlite3.connect("mexxlista.db")
+    conexion.row_factory = sqlite3.Row
+    cursor = conexion.cursor()
+    
+    # Base de la consulta
+    query = "SELECT id, nombre, precio, marca, fecha, categoria FROM precios_lista WHERE 1=1"
+    params = []
+    
+    # Filtro de marcas
+    if marca_indicada != "Todo":
+        query += " AND marca = ?"
+        params.append(marca_indicada)
+        
+    # Filtro de categorías
+    if categoria_indicada != "Todo":
+         if categoria_indicada == "Periféricos":
+              query += " AND categoria IN ('Teclados y Mouses', 'Audio y Microfonos')"
 
-     if marca_indicada == "Todo":
-          cursor.execute("SELECT id, nombre, precio, marca, fecha FROM precios_lista ORDER BY precio ASC")
-     else:
-          cursor.execute("SELECT id, nombre, precio, marca, fecha FROM precios_lista WHERE marca = ? ORDER BY precio ASC", (marca_indicada,))
-     productos = cursor.fetchall()
-     conexion.close
-     return render_template("productos_cards.html", productos=productos)
+         else:
+               query += " AND categoria = ?"
+               params.append(categoria_indicada)
+        
+         query += " ORDER BY precio ASC"
+    
+    cursor.execute(query, params)
+    productos = cursor.fetchall()
+    conexion.close()
+    
+    return render_template("productos_cards.html", productos=productos)
 
 @app.route('/detalle/<int:producto_id>')
 def producto_seleccionado(producto_id):

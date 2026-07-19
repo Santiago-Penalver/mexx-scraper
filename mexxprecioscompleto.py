@@ -27,10 +27,8 @@ def actualizar_precios_lista():
     conexion = sqlite3.connect("mexxlista.db")
     cursor = conexion.cursor()
     
-   # Borramos la tabla vieja de raíz para resetear las columnas
     cursor.execute("DROP TABLE IF EXISTS precios_lista")
     
-    # Creamos la tabla desde cero incluyendo la nueva columna 'categoria'
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS precios_lista (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +41,6 @@ def actualizar_precios_lista():
     """)
     conexion.commit()
     
-    # Limpiamos la tabla una sola vez antes de empezar a recorrer todo
     cursor.execute("DELETE FROM precios_lista")
     conexion.commit()
     
@@ -72,7 +69,7 @@ def actualizar_precios_lista():
                     
                     if not productos_lista:
                         print(f"No se encontraron más productos en {nombre_cat}. Pasando a la siguiente categoría.")
-                        break # Termina el while de esta categoría y el bucle for pasa a la siguiente
+                        break
                         
                     for prod in productos_lista:
                         tag_name = prod.find("h4") or prod.find(class_=lambda x: x and 'title' in x)
@@ -89,7 +86,6 @@ def actualizar_precios_lista():
                                 
                             marca = "AMD" if "amd" in nombre.lower() else ("Intel" if "intel" in nombre.lower() else "Genérica")
                             
-                            # Insertamos los datos incluyendo la categoría correspondiente
                             cursor.execute(
                                 "INSERT INTO precios_lista (nombre, precio, marca, fecha, categoria) VALUES (?, ?, ?, ?, ?)",
                                 (nombre, precio, marca, fecha_hoy, nombre_cat)

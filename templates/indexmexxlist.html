@@ -50,7 +50,7 @@
             <!-- Total Card -->
             <div class="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 border border-gray-700/60 shadow-xl flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-400 tracking-wide uppercase">Processadores Listados</p>
+                    <p class="text-sm font-medium text-gray-400 tracking-wide uppercase">Procesadores Listados</p>
                     <h3 class="text-3xl font-extrabold text-white mt-1">{{ productos|length }}</h3>
                 </div>
                 <div class="bg-gray-700/50 p-4 rounded-xl text-gray-300">
@@ -86,48 +86,59 @@
         </div>
 
         <!-- Sección de Filtros -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-gray-800 pb-4">
-            <div>
-                <h2 class="text-lg font-bold text-gray-200 flex items-center">
-                    <i class="fa-solid fa-list-ul mr-2 text-indigo-400"></i> Stock en vivo desde Mexx
-                </h2>
-                <p class="text-xs text-gray-400 mt-0.5">Listado ordenado directamente de la grilla de la tienda</p>
-            </div>
+        <div class="w-full bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-gray-700/60 mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                
+                <!-- Info a la izquierda -->
+                <div>
+                    <h2 class="text-lg font-bold text-gray-200 flex items-center">
+                        <i class="fa-solid fa-list-ul mr-2 text-indigo-400"></i> Stock en vivo desde Mexx
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-0.5">Listado ordenado directamente de la grilla de la tienda</p>
+                </div>
 
-            <!-- BOTONES DE FILTRO CORREGIDOS (Todos apuntan exactamente al mismo contenedor dinámico completo) -->
-            <div class="flex gap-2">
-                <button hx-get="/filtrar?marca=Todo"
-                        hx-target="#grid-productos"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors border border-gray-700/50">
-                    Todo
-                </button>
-                <button hx-get="/filtrar?marca=AMD"
-                        hx-target="#grid-productos"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 transition-colors border border-orange-500/20">
-                    AMD
-                </button>
-                <button hx-get="/filtrar?marca=Intel"
-                        hx-target="#grid-productos"
-                        class="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 transition-colors border border-blue-500/20">
-                    Intel
-                </button>
+                <!-- Contenedor de Botoneras de Filtros -->
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <!-- FILTROS POR MARCA -->
+                    <div>
+                        <p class="text-xs text-gray-300 font-medium mb-2">Filtrar por Marca:</p>
+                        <div class="flex gap-2">
+                            <button hx-get="/filtrar?marca=Todo" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Todo</button>
+                            <button hx-get="/filtrar?marca=AMD" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-colors">AMD</button>
+                            <button hx-get="/filtrar?marca=Intel" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-colors">Intel</button>
+                        </div>
+                    </div>
+
+                    <!-- FILTROS POR CATEGORÍA -->
+                    <div>
+                        <p class="text-xs text-gray-300 font-medium mb-2">Filtrar por Categoría:</p>
+                        <div class="flex flex-wrap gap-2 max-w-xl">
+                            <button hx-get="/filtrar?categoria=Todo" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Todas</button>
+                            <button hx-get="/filtrar?categoria=Monitores" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Monitores</button>
+                            <button hx-get="/filtrar?categoria=Motherboards" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Motherboards</button>
+                            <button hx-get="/filtrar?categoria=Procesadores" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Procesadores</button>
+                            <button hx-get="/filtrar?categoria=Fuentes de Poder" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Fuentes</button>
+                            <!-- NUEVO BOTÓN DE PERIFÉRICOS -->
+                            <button hx-get="/filtrar?categoria=Periféricos" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Periféricos</button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-
         <!-- Grilla Principal y Detalle -->
         <div class="flex flex-col lg:flex-row gap-8 items-start">
 
-            <!-- 1. CONTENEDOR DINÁMICO (Esto es lo que pisan los filtros y mantiene la grilla sana) -->
+            <!-- 1. CONTENEDOR DINÁMICO -->
             <div id="contenedor-dinamico-tarjetas" class="flex-1 w-full">
                 <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                     {% include 'productos_cards.html' %}
                 </div>
             </div>
 
-            <!-- 2. COLUMNA DE DETALLE INDIVIDUAL (Queda 100% afuera de la zona de filtrado) -->
+            <!-- 2. COLUMNA DE DETALLE INDIVIDUAL -->
             <div id="columna-detalle" class="hidden w-full lg:w-80 xl:w-96 shrink-0 transition-all duration-300">
                 <div id="panel-contenido-detalle" class="sticky top-24 bg-gray-800/40 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 shadow-xl">
-                    <!-- Aquí HTMX inyecta de forma limpia producto_detalle.html -->
                 </div>
             </div>
 
@@ -136,7 +147,7 @@
     </main>
 
     <footer class="mt-20 border-t border-gray-800 bg-gray-950/40 py-6 text-center text-xs text-gray-600">
-        <p>Hardware Tracker Dashboard v1.0 – Proyecto Flask & SQLite3</p>
+        <p>Hardware Tracker Dashboard v1.0 – Proyecto Flask & SQLite3 by Santiago Peñalver</p>
     </footer>
 
 </body>
