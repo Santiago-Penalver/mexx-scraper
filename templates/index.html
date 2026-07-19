@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Primer Flask</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f4f9; color: #333; }
+        h1 { color: #2c3e50; }
+        .buclebox {background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+     <h1>¡Hola, {{usuario}}! Bienvenido a Flask.</h1>
+
+     <hr>
+
+    <h3>Demostración de Jinja2:</h3>
+    <div class="bucle-box">
+        <p>A continuación, listamos cosas usando un bucle <code>{ for }</code>:</p>
+        <ul>
+           {% for tecnologia in herramientas %}
+            <li><strong>{{ tecnologia }}</strong> - ¡Procesado dinámicamente!</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% for prod in productos %}
+  {% set border_cls = 'border-gray-700/70 hover:border-gray-600' %}
+  {% set badge_cls = 'bg-gray-700/10 text-gray-300 border-gray-600' %}
+  {% set brand_icon = 'fa-microchip' %}
+
+  {% if prod.marca == 'AMD' %}
+    {% set border_cls = 'border-orange-500/20 hover:border-orange-500/40 bg-gradient-to-b from-gray-800/90 to-orange-950/5' %}
+    {% set badge_cls = 'bg-orange-500/10 text-orange-400 border-orange-500/30' %}
+    {% set brand_icon = 'fa-fire-flame-curved' %}
+  {% elif prod.marca == 'Intel' %}
+    {% set border_cls = 'border-blue-500/20 hover:border-blue-500/40 bg-gradient-to-b from-gray-800/90 to-blue-950/5' %}
+    {% set badge_cls = 'bg-blue-500/10 text-blue-400 border-blue-500/30' %}
+    {% set brand_icon = 'fa-bolt' %}
+  {% endif %}
+
+  <!-- AGREGADOS LOS ATRIBUTOS HTMX AQUÍ PARA EL CLIC INDIVIDUAL -->
+  <div hx-get="/detalle/{{ prod.id }}"
+       hx-target="#panel-contenido-detalle"
+       hx-on::after-request="document.getElementById('columna-detalle').classList.remove('hidden')"
+       class="cursor-pointer bg-gray-800/70 rounded-2xl border {{ border_cls }} p-5 group flex flex-col justify-between h-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1">
+      
+      <div>
+          <div class="flex justify-between items-center mb-4">
+              <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border {{ badge_cls }} flex items-center gap-1.5">
+                  <i class="fa-solid {{ brand_icon }} text-xs"></i>
+                  {{ prod.marca }}
+              </span>
+              <span class="text-[11px] text-gray-500 font-mono">ID: #{{ prod.id }}</span>
+          </div>
+          
+          <h4 class="text-sm font-bold text-gray-200 group-hover:text-white transition-colors duration-200 line-clamp-3 min-h-[3.75rem] leading-relaxed">
+              {{ prod.nombre }}
+          </h4>
+      </div>
+
+      <div class="mt-4 pt-4 border-t border-gray-700/50">
+          <p class="text-xs text-gray-500 mb-0.5">Precio de Lista / Tarjeta</p>
+          <div class="flex items-baseline justify-between">
+              <span class="text-2xl font-black tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r {% if prod.marca == 'AMD' %}group-hover:from-orange-400 group-hover:to-amber-300{% elif prod.marca == 'Intel' %}group-hover:from-blue-400 group-hover:to-cyan-300{% else %}group-hover:from-white group-hover:to-gray-300{% endif %} transition-all duration-300">
+                  ${{ "{:,.2f}".format(prod.precio).replace(',', 'X').replace('.', ',').replace('X', '.') }}
+              </span>
+          </div>
+          
+          <div class="flex items-center text-[10px] text-gray-500 font-mono mt-3">
+              <i class="fa-regular fa-calendar-check mr-1 text-gray-600"></i>
+              {{ prod.fecha.split(' ')[1] if ' ' in prod.fecha else 'S/H' }} hs
+          </div>
+      </div>
+
+  </div>
+{% else %}
+  <div class="col-span-full py-16 text-center bg-gray-800/30 rounded-2xl border border-dashed border-gray-700">
+      <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3 animate-bounce"></i>
+      <h3 class="text-lg font-bold text-gray-300">No hay productos de esta marca</h3>
+  </div>
+{% endfor %}
