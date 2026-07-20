@@ -37,13 +37,20 @@ def filtrar_productos():
     
     # Filtro de marcas
     if marca_indicada != "Todo":
-        query += " AND marca = ?"
-        params.append(marca_indicada)
+         if marca_indicada in ["AMD", "Intel", "Genérica"]:
+            query += " AND marca LIKE ?"
+            params.append(marca_indicada)
+         else:
+             query += " AND (marca LIKE ? OR nombre LIKE ?)"
+             params.append(f"%{marca_indicada}%")
+             params.append(f"%{marca_indicada}%")
         
     # Filtro de categorías
     if categoria_indicada != "Todo":
          if categoria_indicada == "Periféricos":
               query += " AND categoria IN ('Teclados y Mouses', 'Audio y Microfonos')"
+         elif categoria_indicada in ["RAM", "Memorias"]:
+              query += " AND (categoria LIKE '%Memoria&' OR nombre LIKE '%RAM%' OR nombre LIKE '%DDR%')"
 
          else:
                query += " AND categoria = ?"

@@ -98,30 +98,64 @@
                 </div>
 
                 <!-- Contenedor de Botoneras de Filtros -->
-                <div class="flex flex-col sm:flex-row gap-6">
-                    <!-- FILTROS POR MARCA -->
-                    <div>
-                        <p class="text-xs text-gray-300 font-medium mb-2">Filtrar por Marca:</p>
-                        <div class="flex gap-2">
-                            <button hx-get="/filtrar?marca=Todo" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Todo</button>
-                            <button hx-get="/filtrar?marca=AMD" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-colors">AMD</button>
-                            <button hx-get="/filtrar?marca=Intel" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-colors">Intel</button>
-                        </div>
-                    </div>
+                <div class="flex flex-col gap-5">
 
                     <!-- FILTROS POR CATEGORÍA -->
                     <div>
-                        <p class="text-xs text-gray-300 font-medium mb-2">Filtrar por Categoría:</p>
-                        <div class="flex flex-wrap gap-2 max-w-xl">
-                            <button hx-get="/filtrar?categoria=Todo" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Todas</button>
-                            <button hx-get="/filtrar?categoria=Monitores" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Monitores</button>
-                            <button hx-get="/filtrar?categoria=Motherboards" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Motherboards</button>
-                            <button hx-get="/filtrar?categoria=Procesadores" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Procesadores</button>
-                            <button hx-get="/filtrar?categoria=Fuentes de Poder" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Fuentes</button>
-                            <!-- NUEVO BOTÓN DE PERIFÉRICOS -->
-                            <button hx-get="/filtrar?categoria=Periféricos" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-colors">Periféricos</button>
+                            <p class="text-xs text-gray-400 font-medium mb-2.5 flex items-center">
+                                <i class="fa-solid fa-layer-group mr-2 text-indigo-400"></i> Categorías:
+                            </p>
+                            <div class="flex flex-wrap gap-2" id="grupo-categorias">
+                                <button hx-get="/filtrar?categoria=Todo" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all">Todas</button>
+                                <button hx-get="/filtrar?categoria=Procesadores" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all">Procesadores</button>
+                                <button hx-get="/filtrar?categoria=Motherboards" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all">Motherboards</button>
+                                <button hx-get="/filtrar?categoria=RAM" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all">RAM / Memorias</button>
+                                <button hx-get="/filtrar?categoria=Monitores" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all">Monitores</button>
+                                <button hx-get="/filtrar?categoria=Fuentes de Poder" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all">Fuentes</button>
+                                <button hx-get="/filtrar?categoria=Periféricos" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all">Periféricos</button>
+                            </div>
                         </div>
+
+                        <!-- FILTROS POR MARCA (Organizadas por ecosistema) -->
+                        <div>
+                            <p class="text-xs text-gray-400 font-medium mb-2.5 flex items-center">
+                                <i class="fa-solid fa-copyright mr-2 text-indigo-400"></i> Marcas Destacadas:
+                            </p>
+                            <div class="flex flex-wrap gap-2" id="grupo-marcas">
+                                <!-- Reset -->
+                                <button hx-get="/filtrar?marca=Todo" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Todas</button>
+                                
+                                <!-- Procesadores & Placas Madre / De Video -->
+                                <button hx-get="/filtrar?marca=AMD" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20 hover:bg-orange-500/20 transition-all">AMD</button>
+                                <button hx-get="/filtrar?marca=Intel" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-all">Intel</button>
+                                <button hx-get="/filtrar?marca=Asus" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Asus</button>
+                                <button hx-get="/filtrar?marca=Gigabyte" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Gigabyte</button>
+                                <button hx-get="/filtrar?marca=MSI" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">MSI</button>
+                                <button hx-get="/filtrar?marca=Asrock" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Asrock</button>
+
+                                <!-- Memorias & Almacenamiento -->
+                                <button hx-get="/filtrar?marca=Kingston" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Kingston</button>
+                                <button hx-get="/filtrar?marca=HyperX" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">HyperX</button>
+                                <button hx-get="/filtrar?marca=Corsair" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Corsair</button>
+                                <button hx-get="/filtrar?marca=Patriot" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Patriot</button>
+                                <button hx-get="/filtrar?marca=Crucial" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Crucial</button>
+                                <button hx-get="/filtrar?marca=Adata" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Adata / XPG</button>
+
+                                <!-- Periféricos -->
+                                <button hx-get="/filtrar?marca=Logitech" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Logitech</button>
+                                <button hx-get="/filtrar?marca=Redragon" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Redragon</button>
+                                <button hx-get="/filtrar?marca=Razer" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Razer</button>
+                                <button hx-get="/filtrar?marca=VSG" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">VSG</button>
+
+                                <!-- Monitores & Pantallas -->
+                                <button hx-get="/filtrar?marca=LG" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">LG</button>
+                                <button hx-get="/filtrar?marca=Samsung" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">Samsung</button>
+                                <button hx-get="/filtrar?marca=ViewSonic" hx-target="#grid-productos" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 transition-all">ViewSonic</button>
+                            </div>
+                        </div>
+
                     </div>
+
                 </div>
 
             </div>
