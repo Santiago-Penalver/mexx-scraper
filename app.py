@@ -20,8 +20,35 @@ def productos_mexx_db():
 
 @app.route("/")
 def index():
-    productos = productos_mexx_db()
-    return render_template("indexmexxlist.html", productos=productos)
+    marca_indicada = "Todo"
+    categoria_indicada = "Todo"
+    pagina = 1
+    por_pagina = 12
+    offset = 0
+
+    conexion = sqlite3.connect("mexxlista.db")
+    conexion.row_factory = sqlite3.Row
+    cursor = conexion.cursor()
+
+    query_base = "FROM precios_lista WHERE 1=1"
+    
+    cursor.execute(f"SELECT COUNT(*) {query_base}")
+    total_productos = cursor.fetchone()[0]
+    total_paginas = math.ceil(total_productos / por_pagina) if total_productos > 0 else 1
+
+    query_final = f"SELECT id, nombre, precio, marca, fecha, categoria {query_base} ORDER BY precio ASC LIMIT ? OFFSET ?"
+    cursor.execute(query_final, [por_pagina, offset])
+    productos = cursor.fetchall()
+    conexion.close()
+
+    return render_template(
+        "indexmexxlist.html", 
+        productos=productos,
+        pagina_actual=pagina,
+        total_paginas=total_paginas,
+        marca_actual=marca_indicada,
+        categoria_actual=categoria_indicada
+    )
 
 @app.route("/filtrar")
 def filtrar_productos():
@@ -90,6 +117,10 @@ def producto_seleccionado(producto_id):
      if producto:
           return render_template("producto_detalle.html", prod=producto)
      return "<p class='text-gray-400 p-4'>Producto no encontrado</p>"
+
+@app.route("/vaciar")
+def vaciar_detalle():
+    return ""
 
 if __name__ == '__main__':
      app.run(debug=True, port=5000)
