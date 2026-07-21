@@ -1,34 +1,117 @@
 {% if productos %}
     {% for prod in productos %}
-        {% set border_cls = 'border-gray-700/70 hover:border-gray-600' %}
-        {% set badge_cls = 'bg-gray-700/10 text-gray-300 border-gray-600' %}
-        {% set brand_icon = 'fa-microchip' %}
+        {% set marca_db = (prod.marca if prod.marca else '') | lower %}
+        {% set nombre_prod = (prod.nombre if prod.nombre else '') | lower %}
 
-        {% if prod.marca == 'AMD' %}
-            {% set border_cls = 'border-orange-500/20 hover:border-orange-500/40 bg-gradient-to-b from-gray-800/90 to-orange-950/5' %}
-            {% set badge_cls = 'bg-orange-500/10 text-orange-400 border-orange-500/30' %}
-            {% set brand_icon = 'fa-fire-flame-curved' %}
-        {% elif prod.marca == 'Intel' %}
-            {% set border_cls = 'border-blue-500/20 hover:border-blue-500/40 bg-gradient-to-b from-gray-800/90 to-blue-950/5' %}
-            {% set badge_cls = 'bg-blue-500/10 text-blue-400 border-blue-500/30' %}
-            {% set brand_icon = 'fa-bolt' %}
+        {# --- Estilos según Marcas --- #}
+
+        {# 1. ASUS #}
+        {% if 'asus' in marca_db %}
+            {% set marca_nombre = "Asus" %}
+            {% set border_cls = "border-indigo-500/30 hover:border-indigo-500/80 hover:shadow-indigo-500/10" %}
+            {% set badge_cls = "bg-indigo-950/60 text-indigo-400 border-indigo-500/40" %}
+            {% set brand_icon = "fa-microchip" %}
+
+        {# 2. GIGABYTE / AORUS #}
+        {% elif 'gigabyte' in marca_db or 'aorus' in marca_db %}
+            {% set marca_nombre = "Gigabyte" %}
+            {% set border_cls = "border-orange-500/30 hover:border-orange-500/80 hover:shadow-orange-500/10" %}
+            {% set badge_cls = "bg-orange-950/60 text-orange-400 border-orange-500/40" %}
+            {% set brand_icon = "fa-microchip" %}
+
+        {# 3. MSI #}
+        {% elif 'msi' in marca_db %}
+            {% set marca_nombre = "MSI" %}
+            {% set border_cls = "border-red-600/30 hover:border-red-600/80 hover:shadow-red-600/10" %}
+            {% set badge_cls = "bg-red-950/60 text-red-400 border-red-500/40" %}
+            {% set brand_icon = "fa-microchip" %}
+
+        {# 4. AMD #}
+        {% elif 'amd' in marca_db %}
+            {% set marca_nombre = "AMD" %}
+            {% set border_cls = "border-red-500/30 hover:border-red-500/80 hover:shadow-red-500/10" %}
+            {% set badge_cls = "bg-red-950/60 text-red-400 border-red-500/40" %}
+            {% set brand_icon = "fa-fire-flame-curved" %}
+
+        {# 5. INTEL #}
+        {% elif 'intel' in marca_db %}
+            {% set marca_nombre = "Intel" %}
+            {% set border_cls = "border-sky-500/30 hover:border-sky-500/80 hover:shadow-sky-500/10" %}
+            {% set badge_cls = "bg-sky-950/60 text-sky-400 border-sky-500/40" %}
+            {% set brand_icon = "fa-bolt" %}
+
+        {# 6. LOGITECH #}
+        {% elif 'logitech' in marca_db %}
+            {% set marca_nombre = "Logitech" %}
+            {% set border_cls = "border-blue-500/30 hover:border-blue-500/80 hover:shadow-blue-500/10" %}
+            {% set badge_cls = "bg-blue-950/60 text-blue-400 border-blue-500/40" %}
+            {% set brand_icon = "fa-computer-mouse" %}
+
+        {# 7. REDRAGON #}
+        {% elif 'redragon' in marca_db %}
+            {% set marca_nombre = "Redragon" %}
+            {% set border_cls = "border-rose-600/30 hover:border-rose-600/80 hover:shadow-rose-600/10" %}
+            {% set badge_cls = "bg-rose-950/60 text-rose-400 border-rose-500/40" %}
+            {% set brand_icon = "fa-gamepad" %}
+
+        {# 8. RAZER #}
+        {% elif 'razer' in marca_db %}
+            {% set marca_nombre = "Razer" %}
+            {% set border_cls = "border-emerald-500/30 hover:border-emerald-500/80 hover:shadow-emerald-500/10" %}
+            {% set badge_cls = "bg-emerald-950/60 text-emerald-400 border-emerald-500/40" %}
+            {% set brand_icon = "fa-headset" %}
+
+        {# 9. CORSAIR #}
+        {% elif 'corsair' in marca_db %}
+            {% set marca_nombre = "Corsair" %}
+            {% set border_cls = "border-amber-500/30 hover:border-amber-500/80 hover:shadow-amber-500/10" %}
+            {% set badge_cls = "bg-amber-950/60 text-amber-400 border-amber-500/40" %}
+            {% set brand_icon = "fa-memory" %}
+
+        {# 10. KINGSTON #}
+        {% elif 'kingston' in marca_db %}
+            {% set marca_nombre = "Kingston" %}
+            {% set border_cls = "border-red-500/30 hover:border-red-500/80 hover:shadow-red-500/10" %}
+            {% set badge_cls = "bg-red-950/60 text-red-400 border-red-500/40" %}
+            {% set brand_icon = "fa-memory" %}
+
+        {# 10.5. HYPERX #}
+        {% elif 'hyperx' in marca_db %}
+            {% set marca_nombre = "HyperX" %}
+            {% set border_cls = "border-rose-500/30 hover:border-rose-500/80 hover:shadow-rose-500/10" %}
+            {% set badge_cls = "bg-rose-950/60 text-rose-400 border-rose-500/40" %}
+            {% set brand_icon = "fa-headset" %}
+
+        {# 11. ADATA / XPG #}
+        {% elif 'adata' in marca_db or 'xpg' in marca_db %}
+            {% set marca_nombre = "Adata" %}
+            {% set border_cls = "border-purple-500/30 hover:border-purple-500/80 hover:shadow-purple-500/10" %}
+            {% set badge_cls = "bg-purple-950/60 text-purple-400 border-purple-500/40" %}
+            {% set brand_icon = "fa-memory" %}
+
+        {# 12. DEFAULT / OTROS #}
+        {% else %}
+            {% set marca_nombre = prod.marca if prod.marca else 'GENÉRICA' %}
+            {% set border_cls = "border-gray-800 hover:border-gray-600 hover:shadow-gray-500/5" %}
+            {% set badge_cls = "bg-gray-900/80 text-gray-300 border-gray-700" %}
+            {% set brand_icon = "fa-microchip" %}
         {% endif %}
 
+        <!-- TARJETA INDIVIDUAL -->
         <div hx-get="/detalle/{{ prod.id }}"
-             hx-target="#panel-contenido-detalle"
-             hx-on::after-request="document.getElementById('columna-detalle').classList.remove('hidden')"
-             class="cursor-pointer bg-gray-800/70 rounded-2xl border {{ border_cls }} p-5 group flex flex-col justify-between h-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1">
-            
+            hx-target="#panel-contenido-detalle"
+            hx-swap="innerHTML"
+            class="cursor-pointer bg-gray-900/90 rounded-2xl border {{ border_cls }} p-5 group flex flex-col justify-between h-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1">
             <div>
                 <div class="flex justify-between items-center mb-4">
                     <span class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md border {{ badge_cls }} flex items-center gap-1.5">
-                        <i class="fa-solid {{ brand_icon }} text-xs"></i>
-                        {{ prod.marca }}
+                    <i class="fa-solid {{ brand_icon }} text-xs"></i>
+                    {{ marca_nombre }}
                     </span>
                     <span class="text-[11px] text-gray-500 font-mono">ID: #{{ prod.id }}</span>
                 </div>
 
-                <h4 class="text-sm font-bold text-gray-200 group-hover:text-white transition-colors duration-200 line-clamp-3 min-h-[3.75rem] leading-relaxed">
+                <h4 class="text-sm font-bold text-gray-200 group-hover:text-white transition-colors duration-200 line-clamp-2 min-h-[2.5rem] leading-relaxed">
                     {{ prod.nombre }}
                 </h4>
             </div>
@@ -37,62 +120,58 @@
                 <div class="mt-4 pt-4 border-t border-gray-700/50">
                     <p class="text-xs text-gray-500 mb-0.5">Precio de Lista / Tarjeta</p>
                     <div class="flex items-baseline justify-between">
-                        <span class="text-2xl font-black tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r {% if prod.marca == 'AMD' %}group-hover:from-orange-400 group-hover:to-amber-300{% else %}group-hover:from-emerald-400 group-hover:to-teal-300{% endif %}">
-                            ${{ "{:,.2f}".format(prod.precio).replace(',', 'X').replace('.', ',').replace('X', '.') }}
+                        <span class="text-2xl font-black tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+                            ${{ "{:,.2f}".format(prod.precio).replace(',', 'X').replace('.', ',').replace('X', '.') if prod.precio else "Consultar" }}
                         </span>
-                    </div>
+                    </div> 
                 </div>
 
                 <div class="flex items-center text-[10px] text-gray-500 font-mono mt-3">
                     <i class="fa-regular fa-calendar-check mr-1 text-gray-600"></i>
-                    {{ prod.fecha.split(' ')[1] if ' ' in prod.fecha else 'S/H' }} hs
+                    {{ prod.fecha.split(" ")[1] if ' ' in prod.fecha else 'S/H' }} hs
                 </div>
             </div>
+
         </div>
     {% endfor %}
 
-    <!-- BARRA DE PAGINACIÓN AL PIE PÁGINA -->
-    {% if total_paginas is defined and total_paginas > 1 %}
-    <div class="col-span-full mt-8 flex items-center justify-center gap-3">
-        
-        <!-- Botón Anterior -->
-        {% if pagina_actual is defined and pagina_actual > 1 %}
-        <button hx-get="/filtrar?marca={{ marca_actual | default('Todo') }}&categoria={{ categoria_actual | default('Todo') }}&pagina={{ pagina_actual - 1 }}" 
-                hx-target="#grid-productos"
-                class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all border border-gray-700 flex items-center gap-2">
-            <i class="fa-solid fa-chevron-left text-[10px]"></i> Anterior
-        </button>
-        {% else %}
-        <button disabled class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800/40 text-gray-600 border border-gray-800/60 cursor-not-allowed flex items-center gap-2">
-            <i class="fa-solid fa-chevron-left text-[10px]"></i> Anterior
-        </button>
+        <!-- BARRA DE PAGINACIÓN -->
+        {% if total_paginas is defined and total_paginas > 1 %}
+            <div class="col-span-full mt-8 flex items-center justify-center gap-3">
+
+                {% if pagina_actual is defined and pagina_actual > 1 %}
+                    <button hx-get="/filtrar?marca={{ marca_actual | default('Todo') }}&categoria={{ categoria_actual | default('Todo') }}&pagina={{ pagina_actual - 1 }}"
+                            hx-target="#grid-productos"
+                            class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all border border-gray-700 flex items-center gap-2">
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i> Anterior
+                    </button>
+                {% else %}
+                    <button disabled class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800/40 text-gray-600 border border-gray-800/60 cursor-not-allowed flex items-center gap-2">
+                        <i class="fa-solid fa-chevron-left text-[10px]"></i> Anterior
+                    </button>
+                {% endif %}
+
+                <span class="text-xs font-medium text-gray-400 px-4 py-2 bg-gray-900/80 border border-gray-800 rounded-xl">
+                    Página <strong class="text-indigo-400">{{ pagina_actual | default(1) }}</strong> de <strong>{{ total_paginas }}</strong>
+                </span>
+
+                {% if pagina_actual is defined and pagina_actual < total_paginas %}
+                    <button hx-get="/filtrar?marca={{ marca_actual | default('Todo') }}&categoria={{ categoria_actual | default('Todo') }}&pagina={{ pagina_actual + 1 }}"
+                            hx-target="#grid-productos"
+                            class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all border border-gray-700 flex items-center gap-2">
+                        Siguiente <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                {% else %}
+                    <button disabled class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800/40 text-gray-600 border border-gray-800/60 cursor-not-allowed flex items-center gap-2">
+                        Siguiente <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </button>
+                {% endif %}
+            </div>
         {% endif %}
-
-        <!-- Indicador -->
-        <span class="text-xs font-medium text-gray-400 px-4 py-2 bg-gray-900/80 border border-gray-800 rounded-xl">
-            Página <strong class="text-indigo-400">{{ pagina_actual | default(1) }}</strong> de <strong>{{ total_paginas }}</strong>
-        </span>
-
-        <!-- Botón Siguiente -->
-        {% if pagina_actual is defined and pagina_actual < total_paginas %}
-        <button hx-get="/filtrar?marca={{ marca_actual | default('Todo') }}&categoria={{ categoria_actual | default('Todo') }}&pagina={{ pagina_actual + 1 }}" 
-                hx-target="#grid-productos"
-                class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white transition-all border border-gray-700 flex items-center gap-2">
-            Siguiente <i class="fa-solid fa-chevron-right text-[10px]"></i>
-        </button>
-        {% else %}
-        <button disabled class="px-4 py-2 text-xs font-semibold rounded-xl bg-gray-800/40 text-gray-600 border border-gray-800/60 cursor-not-allowed flex items-center gap-2">
-            Siguiente <i class="fa-solid fa-chevron-right text-[10px]"></i>
-        </button>
-        {% endif %}
-
-    </div>
-    {% endif %}
 
 {% else %}
-    <!-- Estado Vacío -->
     <div class="col-span-full py-16 text-center bg-gray-800/30 rounded-2xl border border-dashed border-gray-700">
-        <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3 animate-bounce"></i>
-        <h3 class="text-lg font-bold text-gray-300">No hay productos de esta marca o categoría</h3>
+    <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3 animate-bounce"></i>
+    <h3 class="text-lg font-bold text-gray-300">No hay productos de esta marca o categoría</h3>
     </div>
 {% endif %}

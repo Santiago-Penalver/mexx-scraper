@@ -31,21 +31,33 @@ def index():
     cursor = conexion.cursor()
 
     query_base = "FROM precios_lista WHERE 1=1"
-    
+
+    # Total general
     cursor.execute(f"SELECT COUNT(*) {query_base}")
     total_productos = cursor.fetchone()[0]
     total_paginas = math.ceil(total_productos / por_pagina) if total_productos > 0 else 1
 
+    # Totales específicos por marca
+    cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(nombre) LIKE '%ryzen%' OR LOWER(marca) LIKE '%amd%'")
+    total_amd = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(nombre) LIKE '%intel%' OR LOWER(nombre) LIKE '%core%'")
+    total_intel = cursor.fetchone()[0]
+
+    # Productos paginados
     query_final = f"SELECT id, nombre, precio, marca, fecha, categoria {query_base} ORDER BY precio ASC LIMIT ? OFFSET ?"
     cursor.execute(query_final, [por_pagina, offset])
     productos = cursor.fetchall()
     conexion.close()
 
     return render_template(
-        "indexmexxlist.html", 
+        "indexmexxlist.html",
         productos=productos,
         pagina_actual=pagina,
         total_paginas=total_paginas,
+        total_productos=total_productos,
+        total_amd=total_amd,
+        total_intel=total_intel,
         marca_actual=marca_indicada,
         categoria_actual=categoria_indicada
     )
@@ -68,20 +80,26 @@ def filtrar_productos():
 
     # Filtro de Marca
     if marca_indicada != "Todo":
-        if marca_indicada in ["AMD", "Intel", "Genérica"]:
-            query_base += " AND marca = ?"
-            params.append(marca_indicada)
+    
+        marca_clean = marca_indicada.lower().strip()
+        # Manejo de marcas compuestas o con variantes
+        if "adata" in marca_clean or "xpg" in marca_clean:
+            query_base += " AND (LOWER(marca) LIKE '%adata%' OR LOWER(marca) LIKE '%xpg%')"
+        elif "gigabyte" in marca_clean or "aorus" in marca_clean:
+            query_base += " AND (LOWER(marca) LIKE '%gigabyte%' OR LOWER(marca) LIKE '%aorus%')"
+        elif "hyperx" in marca_clean:
+            query_base += " AND LOWER(marca) LIKE '%hyperx%'"
+        elif "kingston" in marca_clean:
+            query_base += " AND LOWER(marca) LIKE '%kingston%'"
         else:
-            query_base += " AND (marca LIKE ? OR nombre LIKE ?)"
-            params.append(f"%{marca_indicada}%")
-            params.append(f"%{marca_indicada}%")
+            # Marcas individuales
+            query_base += " AND LOWER(marca) = ?"
+            params.append(marca_clean)
 
-    # Filtro de Categoría
+     # Filtro de Categoría
     if categoria_indicada != "Todo":
         if categoria_indicada == "Periféricos":
             query_base += " AND categoria IN ('Teclados y Mouses', 'Audio y Microfonos')"
-        elif categoria_indicada in ["RAM", "Memorias"]:
-            query_base += " AND (categoria LIKE '%Memoria%' OR nombre LIKE '%RAM%' OR nombre LIKE '%DDR%')"
         else:
             query_base += " AND categoria = ?"
             params.append(categoria_indicada)
