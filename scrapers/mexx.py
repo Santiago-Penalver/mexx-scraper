@@ -31,10 +31,9 @@ def actualizar_precios_lista():
     ua = UserAgent()
     session = requests.Session()
 
-    conexion = sqlite3.connect("mexxlista.db")
+    conexion = sqlite3.connect("hardware_tracker.db")
     cursor = conexion.cursor()
 
-    cursor.execute("DROP TABLE IF EXISTS precios_lista")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS precios_lista (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,10 +41,11 @@ def actualizar_precios_lista():
             precio REAL,
             marca TEXT,
             fecha TEXT,
-            categoria TEXT
+            categoria TEXT,
+            tienda TEXT
         )
     """)
-    conexion.commit()
+    cursor.execute("DELETE FROM precios_lista WHERE tienda = 'Mexx'")
 
     # Bucle principal por categoría
     for rubro, nombre_cat in CATEGORIAS.items():
@@ -138,8 +138,8 @@ def actualizar_precios_lista():
                             # Todo este proceso para que no mezcle las marcas de Mothers y Procesadores principalmente 
 
                             cursor.execute(
-                                "INSERT INTO precios_lista (nombre, precio, marca, fecha, categoria) VALUES (?, ?, ?, ?, ?)",
-                                (nombre, precio, marca, fecha_hoy, nombre_cat)
+                                "INSERT INTO precios_lista (nombre, precio, marca, fecha, categoria, tienda) VALUES (?, ?, ?, ?, ?, ?)",
+                                (nombre, precio, marca, fecha_hoy, nombre_cat, "Mexx")
                             )
                             contador += 1
                             print(f"Guardado {nombre[:40]}... | ${precio} [{nombre_cat}]")

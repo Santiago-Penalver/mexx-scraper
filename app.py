@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 def productos_mexx_db():
      try:
-          conexion = sqlite3.connect("mexxlista.db")
+          conexion = sqlite3.connect("hardware_tracker.db")
           conexion.row_factory = sqlite3.Row
           cursor = conexion.cursor()
 
@@ -26,7 +26,7 @@ def index():
     por_pagina = 12
     offset = 0
 
-    conexion = sqlite3.connect("mexxlista.db")
+    conexion = sqlite3.connect("hardware_tracker.db")
     conexion.row_factory = sqlite3.Row
     cursor = conexion.cursor()
 
@@ -102,7 +102,7 @@ def filtrar_productos():
     por_pagina = 12 
     offset = (pagina - 1) * por_pagina
 
-    conexion = sqlite3.connect("mexxlista.db")
+    conexion = sqlite3.connect("hardware_tracker.db")
     conexion.row_factory = sqlite3.Row
     cursor = conexion.cursor()
     query_base = "FROM precios_lista WHERE 1=1"
@@ -154,7 +154,7 @@ def filtrar_productos():
     )
 @app.route('/detalle/<int:producto_id>')
 def producto_seleccionado(producto_id):
-     conexion = sqlite3.connect("mexxlista.db")
+     conexion = sqlite3.connect("hardware_tracker.db")
      conexion.row_factory = sqlite3.Row
      cursor = conexion.cursor()
 
