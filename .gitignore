@@ -22,3 +22,7 @@ __pycache__/
 # Archivos temporales de sistema (Windows / Mac)
 Thumbs.db
 .DS_Store
+
+# Scripts de prueba y auditoría local
+audit_words.py
+test_compragamer.py

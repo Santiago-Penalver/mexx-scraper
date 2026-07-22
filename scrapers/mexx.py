@@ -6,6 +6,7 @@ import time
 import random
 from datetime import datetime
 from fake_useragent import UserAgent
+from utils import es_producto_valido
 
 # Diccionario de rubros de Mexx
 CATEGORIAS = {
@@ -135,7 +136,10 @@ def actualizar_precios_lista():
                                     marca_detectada = "Genérica"
 
                             marca = marca_detectada
-                            # Todo este proceso para que no mezcle las marcas de Mothers y Procesadores principalmente 
+                            # Todo este proceso para que no mezcle las marcas de Mothers y Procesadores principalmente
+
+                            if not es_producto_valido(nombre, precio):
+                                continue 
 
                             cursor.execute(
                                 "INSERT INTO precios_lista (nombre, precio, marca, fecha, categoria, tienda) VALUES (?, ?, ?, ?, ?, ?)",
