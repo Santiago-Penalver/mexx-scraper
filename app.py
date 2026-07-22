@@ -37,12 +37,36 @@ def index():
     total_productos = cursor.fetchone()[0]
     total_paginas = math.ceil(total_productos / por_pagina) if total_productos > 0 else 1
 
-    # Totales específicos por marca
+    # --- Totales específicos por marca/categoría ---
+
     cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(nombre) LIKE '%ryzen%' OR LOWER(marca) LIKE '%amd%'")
     total_amd = cursor.fetchone()[0]
 
     cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(nombre) LIKE '%intel%' OR LOWER(nombre) LIKE '%core%'")
     total_intel = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(marca) LIKE '%asus%' OR LOWER(nombre) LIKE '%asus%'")
+    total_asus = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(marca) LIKE '%gigabyte%' OR LOWER(nombre) LIKE '%aorus%' OR LOWER(nombre) LIKE '%gigabyte%'")
+    total_gigabyte = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(marca) LIKE '%msi%' OR LOWER(nombre) LIKE '%msi%'")
+    total_msi = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(marca) LIKE '%kingston%' OR LOWER(marca) LIKE '%hyperx%'")
+    total_kingston = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM precios_lista WHERE LOWER(marca) LIKE '%razer%' OR LOWER(marca) LIKE '%logitech%' OR LOWER(marca) LIKE '%redragon%'")
+    total_perifericos_marcas = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT COUNT(*) FROM precios_lista 
+        WHERE LOWER(marca) NOT IN ('amd', 'intel', 'asus', 'gigabyte', 'msi', 'kingston', 'hyperx')
+        AND LOWER(nombre) NOT LIKE '%ryzen%' 
+        AND LOWER(nombre) NOT LIKE '%intel%'
+    """)
+    total_otros = cursor.fetchone()[0]
 
     # Productos paginados
     query_final = f"SELECT id, nombre, precio, marca, fecha, categoria {query_base} ORDER BY precio ASC LIMIT ? OFFSET ?"
@@ -51,15 +75,21 @@ def index():
     conexion.close()
 
     return render_template(
-        "indexmexxlist.html",
-        productos=productos,
-        pagina_actual=pagina,
-        total_paginas=total_paginas,
-        total_productos=total_productos,
-        total_amd=total_amd,
-        total_intel=total_intel,
-        marca_actual=marca_indicada,
-        categoria_actual=categoria_indicada
+    "indexmexxlist.html",
+    productos=productos,
+    pagina_actual=pagina,
+    total_paginas=total_paginas,
+    total_productos=total_productos,
+    total_amd=total_amd,
+    total_intel=total_intel,
+    total_asus=total_asus,
+    total_gigabyte=total_gigabyte,
+    total_msi=total_msi,
+    total_kingston=total_kingston,
+    total_perifericos_marcas=total_perifericos_marcas,
+    total_otros=total_otros,
+    marca_actual=marca_indicada,
+    categoria_actual=categoria_indicada
     )
 
 @app.route("/filtrar")
